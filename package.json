@@ -1,0 +1,23 @@
+{
+  "name": "vinod-lap",
+  "version": "1.0.0",
+  "description": "Used for the backend API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vinodkumartheking/BankendAPI.git"
+  },
+  "author": "Vinod",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vinodkumartheking/BankendAPI/issues"
+  },
+  "homepage": "https://github.com/vinodkumartheking/BankendAPI#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
