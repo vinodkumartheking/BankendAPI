@@ -1,5 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const dotenv = require("dotenv")
+dotenv.config()
 
 mongoose.connect("mongodb+srv://dbadminusr:dbadmin@cluster0.h8q7y.mongodb.net/DoctorDB?retryWrites=true&w=majority")
 var app = express()
@@ -29,6 +31,6 @@ app.get("/getdoctor",(req,res)=>{
     })
 })
 
-app.listen("3000",(req,res)=>{
+app.listen(process.env.PORT || 3000,(req,res)=>{
     console.log("applicaiton is running fine")
 })
