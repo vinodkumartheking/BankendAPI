@@ -20,9 +20,10 @@ let url = "mongodb+srv://dbadminusr:dbadmin@cluster0.h8q7y.mongodb.net/"
 
 app.get("/getdoctor",(req,res)=>{
     MongoClient.connect(url,(err,db)=>{
-        let dbo = db.do("DoctorDB")
-        let query = {location:"madurai"}
-        dbo.collection("DoctorCollection").find(query).toArray((err,result)=>{
+        
+        let dbo = db.db("DoctorDB")
+        let query = {location:"Madurai"}
+        dbo.collection("DoctorCollection").find().toArray((err,result)=>{
             if(err) throw err;
             console.log(result)
             res.send(result)
