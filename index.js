@@ -2,6 +2,8 @@ const express = require("express")
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 const cors = require('cors');
+const ObjectId = require('mongodb').ObjectId; 
+
 dotenv.config()
 
 mongoose.connect(process.env.MongoDBfullurl)
@@ -34,11 +36,14 @@ app.get("/getdoctor",(req,res)=>{
     })
 })
 
-app.get("/getdoctor/id",(req,res)=>{
+app.get("/getdoctor/:id",(req,res)=>{
     MongoClient.connect(url,(err,db)=>{
         
         let dbo = db.db("DoctorDB")
-        let query = {Id:ObjectId(`${id}`)}
+        let query = {"_id" : ObjectId(req.params.id)}
+        console.log("test"+req.params.id)
+       // console.log(`${id}`)
+        //'{"_id":ObjectId("5fc48ab9ae5c8c55034866b6")}' //{Id:"ObjectId("+`${id}`+")"}
         dbo.collection("DoctorCollection").find(query).toArray((err,result)=>{
             if(err) throw err;
             console.log(result)
@@ -49,11 +54,37 @@ app.get("/getdoctor/id",(req,res)=>{
 })
 
 app.post('/bookappointment',(req,res)=>{
-    req.headers("Auth","slkdjf342knd")
-    //code to save in mongobd
-    res.send()
-    db.close()
+    MongoClient.connect(url,(err,db)=>{
+        if(err){InsertErrorOccurred(err)}
+        let dbo = db.db("BookingCollection")
+       
+        console.log("test"+req.body)
+      
+        dbo.collection("BookingCollection").insertOne(myobj, function(err, res) {
+            if (err) { res.send("Error in booking")}
+            console.log("1 document inserted");
+            res.send("Booked successfully")
+            db.close();
+          });
+    })
 })
+
+function InsertErrorOccurred(err){
+    //insert in error table ErrorCollection
+    MongoClient.connect(url,(err,db)=>{
+        
+        let dbo = db.db("ErrorCollection")
+       let myobj=err.toString();
+        console.log("test"+req.body)
+      
+        dbo.collection("ErrorCollection").insertOne(myobj, function(err, res) {
+            if (err) { throw err}
+            console.log("1 document inserted");
+            res.send("Error recored successfully")
+            db.close();
+          });
+    })
+}
 
 app.listen(process.env.PORT || 3000,(req,res)=>{
     console.log("applicaiton is running fine")
