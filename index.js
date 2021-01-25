@@ -20,6 +20,7 @@ app.get("/",(req,res)=>{
 })
 
 var MongoClient = require("mongodb").MongoClient;
+const e = require("express");
 let url = process.env.MongoDBcollectionURL //"mongodb+srv://dbadminusr:dbadmin@cluster0.h8q7y.mongodb.net/"
 
 app.get("/getdoctor",(req,res)=>{
@@ -59,8 +60,9 @@ app.post('/bookappointment',(req,res)=>{
         let dbo = db.db("BookingCollection")
        
         console.log("test"+req.body)
+        
       
-        dbo.collection("BookingCollection").insertOne(myobj, function(err, res) {
+        dbo.collection("BookingCollection").insertOne(req.body, function(err, res) {
             if (err) { res.send("Error in booking")}
             console.log("1 document inserted");
             res.send("Booked successfully")
@@ -76,6 +78,7 @@ function InsertErrorOccurred(err){
         let dbo = db.db("ErrorCollection")
        let myobj=err.toString();
         console.log("test"+req.body)
+        myobj = req.body.toString()
       
         dbo.collection("ErrorCollection").insertOne(myobj, function(err, res) {
             if (err) { throw err}
@@ -89,3 +92,4 @@ function InsertErrorOccurred(err){
 app.listen(process.env.PORT || 3000,(req,res)=>{
     console.log("applicaiton is running fine")
 })
+
