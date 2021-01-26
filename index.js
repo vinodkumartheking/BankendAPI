@@ -57,6 +57,8 @@ app.get("/getdoctor/:id",(req,res)=>{
 })
 
 app.post('/bookappointment',(req,res)=>{
+
+    let status;
     MongoClient.connect(url,(err,db)=>{
         if(err){InsertErrorOccurred(err)}
         let dbo = db.db("BookingCollection")
@@ -67,10 +69,17 @@ app.post('/bookappointment',(req,res)=>{
         dbo.collection("BookingCollection").insertOne(req.body, function(err, res) {
             if (err) { res.send("Error in booking")}
             console.log("1 document inserted");
-            res.send("Booked successfully")
+            status=200
             db.close();
           });
     })
+    if(status == 200){
+        res.send('Booked Successfully')
+    }
+    else{
+        res.send("There is a error occured in inserting")
+    }
+   
 })
 
 function InsertErrorOccurred(err){
