@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 const cors = require('cors');
 const ObjectId = require('mongodb').ObjectId; 
+const MongoDB = require('mongodb').Db
 
 dotenv.config()
 
@@ -34,6 +35,26 @@ app.get("/getdoctor",(req,res)=>{
             if(err) throw err;
             console.log(result)
             res.send(result)
+            db.close()
+        })
+    })
+})
+
+app.get("/gethospitals",(req,res)=>{
+   
+    MongoClient.connect(url,(err,db)=>{
+       
+        let dbo = db.db("DoctorDB")
+        //console.log(dbo.collection("DoctorCollection").distinct('hospitalName').toString());
+        dbo.collection("DoctorCollection").find().toArray((err,result)=>{
+            if(err) throw err;
+            console.log(result)
+            let _hospitalNameArr=[]
+            result.forEach((item)=>{
+                _hospitalNameArr.push(item["hospitalName"])
+            })
+            
+            res.send(Array.from(new Set(_hospitalNameArr)))
             db.close()
         })
     })
