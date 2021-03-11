@@ -129,6 +129,22 @@ app.post('/insertannouncement',(req,res)=>{
    
 })
 
+
+app.get("/getannouncement",(req,res)=>{
+    MongoClient.connect(url,(err,db)=>{
+        
+        let dbo = db.db("AnnouncementDB")
+        //let query = {location:"Madurai"}
+        dbo.collection("Announcement").find().toArray((err,result)=>{
+            if(err) throw err;
+            console.log(result)
+            res.send(result)
+            db.close()
+        })
+    })
+})
+
+
 function InsertErrorOccurred(err){
     //insert in error table ErrorCollection
     MongoClient.connect(url,(err,db)=>{
