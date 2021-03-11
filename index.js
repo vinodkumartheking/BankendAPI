@@ -103,6 +103,32 @@ app.post('/bookappointment',(req,res)=>{
    
 })
 
+app.post('/insertannouncement',(req,res)=>{
+
+    let status;
+    MongoClient.connect(url,(err,db)=>{
+        if(err){InsertErrorOccurred(err)}
+        let dbo = db.db("AnnouncementDB")
+       
+        console.log("test"+req.body)
+        
+      
+        dbo.collection("Announcement").insertOne(req.body, function(err, res) {
+            if (err) { res.send("Error in booking")}
+            console.log("1 announcement inserted");
+            status=200
+            db.close();
+          });
+    })
+    if(status == 200){
+        res.send('Announcement recorded successfully')
+    }
+    else{
+        res.send("There is a error occured in inserting")
+    }
+   
+})
+
 function InsertErrorOccurred(err){
     //insert in error table ErrorCollection
     MongoClient.connect(url,(err,db)=>{
