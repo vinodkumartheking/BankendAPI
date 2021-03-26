@@ -144,6 +144,84 @@ app.get("/getannouncement",(req,res)=>{
     })
 })
 
+app.get("/getdailytips",(req,res)=>{
+    MongoClient.connect(url,(err,db)=>{
+        
+        let dbo = db.db("AnnouncementDB")
+        //let query = {location:"Madurai"}
+        dbo.collection("DailyTips").find().toArray((err,result)=>{
+            if(err) throw err;
+            console.log(result)
+            res.send(result)
+            db.close()
+        })
+    })
+})
+
+app.post('/inserttips',(req,res)=>{
+
+    let status;
+    MongoClient.connect(url,(err,db)=>{
+        if(err){InsertErrorOccurred(err)}
+        let dbo = db.db("AnnouncementDB")
+       
+        console.log("test"+req.body)
+        
+      
+        dbo.collection("DailyTips").insertOne(req.body, function(err, res) {
+            if (err) { res.send("Error in booking")}
+            console.log("1 announcement inserted");
+            status=200
+            db.close();
+          });
+    })
+    if(status == 200){
+        res.send('DailyTips recorded successfully')
+    }
+    else{
+        res.send("There is a error occured in inserting")
+    }
+   
+})
+
+app.get("/getyoutubelinks",(req,res)=>{
+    MongoClient.connect(url,(err,db)=>{
+        
+        let dbo = db.db("AnnouncementDB")
+        //let query = {location:"Madurai"}
+        dbo.collection("YoutubeLink").find().toArray((err,result)=>{
+            if(err) throw err;
+            console.log(result)
+            res.send(result)
+            db.close()
+        })
+    })
+})
+
+app.post('/insertyoutube',(req,res)=>{
+
+    let status;
+    MongoClient.connect(url,(err,db)=>{
+        if(err){InsertErrorOccurred(err)}
+        let dbo = db.db("AnnouncementDB")
+      
+        dbo.collection("YoutubeLink").insertOne(req.body, function(err, res) {
+            if (err) { res.send("Error in booking")}
+            console.log("1 announcement inserted");
+            status=200
+            db.close();
+          });
+    })
+    if(status == 200){
+        res.send('YoutubeLink recorded successfully')
+    }
+    else{
+        res.send("There is a error occured in inserting")
+    }
+   
+})
+
+
 
 function InsertErrorOccurred(err){
     //insert in error table ErrorCollection
