@@ -135,7 +135,7 @@ app.get("/getannouncement",(req,res)=>{
         
         let dbo = db.db("AnnouncementDB")
         //let query = {location:"Madurai"}
-        dbo.collection("Announcement").find().toArray((err,result)=>{
+        dbo.collection("Announcement").find().limit(1).toArray((err,result)=>{
             if(err) throw err;
             console.log(result)
             res.send(result)
@@ -189,7 +189,7 @@ app.get("/getyoutubelinks",(req,res)=>{
         
         let dbo = db.db("AnnouncementDB")
         //let query = {location:"Madurai"}
-        dbo.collection("YoutubeLink").find().toArray((err,result)=>{
+        dbo.collection("YoutubeLink").find().limit(1).toArray((err,result)=>{
             if(err) throw err;
             console.log(result)
             res.send(result)
@@ -217,6 +217,29 @@ app.post('/insertyoutube',(req,res)=>{
     }
     else{
         res.send("There is a error occured in inserting")
+    }
+   
+})
+
+app.post('/adddoctor',(req,res)=>{
+
+    let status;
+    MongoClient.connect(url,(err,db)=>{
+        if(err){InsertErrorOccurred(err)}
+        let dbo = db.db("DoctorDB")
+      
+        dbo.collection("DoctorCollection").insertOne(req.body, function(err, res) {
+            if (err) { res.send("Error in booking")}
+            console.log("1 doctor has been inserted");
+            status=200
+            db.close();
+          });
+    })
+    if(status == 200){
+        res.send('doctor recorded successfully')
+    }
+    else{
+        res.send("There is a error occured in inserting doctor")
     }
    
 })
