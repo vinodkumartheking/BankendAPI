@@ -153,7 +153,7 @@ app.get("/getannouncement",(req,res)=>{
         
         let dbo = db.db("AnnouncementDB")
         // date filter
-        dbo.collection("Announcement").find().limit(1).toArray((err,result)=>{
+        dbo.collection("Announcement").find().sort({TimeStamp:-1}).limit(1).toArray((err,result)=>{
             if(err) throw err;
             console.log(result)
             res.send(result)
@@ -207,7 +207,7 @@ app.get("/getyoutubelinks",(req,res)=>{
         
         let dbo = db.db("AnnouncementDB")
         //let query = {location:"Madurai"}
-        dbo.collection("YoutubeLink").find().limit(1).toArray((err,result)=>{
+        dbo.collection("YoutubeLink").find().sort({TimeStamp:-1}).limit(1).toArray((err,result)=>{
             if(err) throw err;
             console.log(result)
             res.send(result)
