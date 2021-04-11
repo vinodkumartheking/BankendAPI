@@ -77,6 +77,24 @@ app.get("/getdoctor/:id",(req,res)=>{
     })
 })
 
+app.get("/getdoctorbycountry/:country",(req,res)=>{
+    MongoClient.connect(url,(err,db)=>{
+        
+        let dbo = db.db("DoctorDB")
+        console.log("test"+req.params.country)
+        let query = {"Country" : req.params.country}
+     
+       // console.log(`${id}`)
+        //'{"_id":ObjectId("5fc48ab9ae5c8c55034866b6")}' //{Id:"ObjectId("+`${id}`+")"}
+        dbo.collection("DoctorCollection").find(query).toArray((err,result)=>{
+            if(err) throw err;
+            console.log(result)
+            res.send(result)
+            db.close()
+        })
+    })
+})
+
 app.post('/bookappointment',(req,res)=>{
 
     let status;
@@ -134,7 +152,7 @@ app.get("/getannouncement",(req,res)=>{
     MongoClient.connect(url,(err,db)=>{
         
         let dbo = db.db("AnnouncementDB")
-        //let query = {location:"Madurai"}
+        // date filter
         dbo.collection("Announcement").find().limit(1).toArray((err,result)=>{
             if(err) throw err;
             console.log(result)
