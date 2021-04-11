@@ -167,7 +167,7 @@ app.get("/getdailytips",(req,res)=>{
         
         let dbo = db.db("AnnouncementDB")
         //let query = {location:"Madurai"}
-        dbo.collection("DailyTips").find().toArray((err,result)=>{
+        dbo.collection("DailyTips").find().sort({TimeStamp:-1}).limit(1).toArray((err,result)=>{
             if(err) throw err;
             console.log(result)
             res.send(result)
